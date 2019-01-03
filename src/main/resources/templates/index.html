@@ -7,6 +7,13 @@
     <body>
     <div layout:fragment="content">
         <div class="container">
+            <form th:action="@{/}" th:object="${form}" method="post">
+                <div class="form-group">
+                    <label for="repoAddressInput">Adres do repozytorium:</label>
+                    <input type="text" class="form-control" id="repoAddressInput" placeholder="Podaj adres URL do repozytorium na Github">
+                </div>
+                <button type="submit" class="btn btn-primary">Analizuj</button>
+            </form>
         </div>
         <div th:replace="_fragments :: footer"></div>
     </div>
