@@ -26,6 +26,10 @@ dependencies {
             name: 'spring-boot-starter-thymeleaf',
             version: '2.1.1.RELEASE'
 
+    compile group: 'org.thymeleaf',
+            name: 'thymeleaf',
+            version: '3.0.11.RELEASE'
+
     compile group: 'nz.net.ultraq.thymeleaf',
             name: 'thymeleaf-layout-dialect',
             version: '2.3.0'

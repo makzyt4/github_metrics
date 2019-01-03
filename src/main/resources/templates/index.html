@@ -1,15 +1,14 @@
 <!DOCTYPE HTML>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default}">
-<head>
-    <title>Strona główna</title>
-</head>
-<body>
-<div layout:fragment="content">
-    <div class="container">
+    <head>
+        <title>Strona główna</title>
+    </head>
+    <body>
+    <div layout:fragment="content">
+        <div class="container">
+        </div>
+        <div th:replace="_fragments :: footer"></div>
     </div>
-    <div th:replace="_fragments :: footer"></div>
-</div>
-
-</body>
+    </body>
 </html>
