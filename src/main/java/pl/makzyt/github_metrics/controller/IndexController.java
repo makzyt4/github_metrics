@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import pl.makzyt.github_metrics.model.RepositoryForm;
+import pl.makzyt.github_metrics.model.RepositoryInfo;
 
 import javax.validation.Valid;
 
@@ -32,6 +33,9 @@ public class IndexController {
             return "index";
         }
 
+        RepositoryInfo repositoryInfo = new RepositoryInfo(form);
+
+        model.addAttribute("repoInfo", new RepositoryInfo(form));
         logger.info("No errors found, go to template [results].");
         return "results";
     }

@@ -15,6 +15,11 @@
     </head>
     <body>
         <div th:replace="_fragments :: header"></div>
-        <div layout:fragment="content"></div>
+        <div>
+            <div class="container">
+                <div layout:fragment="content"></div>
+            </div>
+            <div th:replace="_fragments :: footer"></div>
+        </div>
     </body>
 </html>

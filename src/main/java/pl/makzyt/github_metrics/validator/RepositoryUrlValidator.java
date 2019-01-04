@@ -20,7 +20,7 @@ public class RepositoryUrlValidator
 
     @Override
     public boolean isValid(String repositoryUrl, ConstraintValidatorContext ctx) {
-        final String githubUrlPattern = "https?://(www\\.)?github\\.com/[a-zA-Z0-9]+/[a-zA-Z0-9]+/?";
+        final String githubUrlPattern = "https?://(www\\.)?github\\.com/[a-zA-Z0-9\\-]+/[a-zA-Z0-9\\-]+/?";
         final boolean isGithubUrl = repositoryUrl.matches(githubUrlPattern);
 
         URL url;
