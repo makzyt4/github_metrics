@@ -8,13 +8,18 @@
     margin-bottom: 0px;
 }
 
-html,body{
-    height: 100%
+html, body {
+  height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
     padding: 15px;
-    height: 100%;
+    flex: 1 0 auto;
 }
 
 input[type='number'] {
@@ -27,8 +32,6 @@ input::-webkit-inner-spin-button {
 }
 
 .footer {
-    padding: 0.5em inherit;
-    position: absolute;
-    bottom: 0px;
+    flex-shrink: 0;
     width: 100%;
 }

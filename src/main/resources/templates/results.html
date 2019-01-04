@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <title th:text="'Analiza repozytorium ' + ${repoInfo.repositoryName}"></title>
+</head>
+<body>
+<div layout:fragment="content">
+    <h2 th:utext="'Repozytorium: <i>' + ${repoInfo.userName}+ '/' + ${repoInfo.repositoryName} + '</i>'"></h2>
+    <br>
+    <h4>Dystrybucja języków (% linii kodu)</h4>
+    <canvas id="langDistChart" width="400" height="400"></canvas>
+    <script th:inline="javascript">
+
+/*<![CDATA[*/
+var langMap = /*[[${repoInfo.languageDistribution}]]*/;
+/*]]>*/
+
+var datasets = [];
+var labels = [];
+for (var i in langMap) {
+    labels.push(i);
+    datasets.push(Math.round(langMap[i] * 100) / 100);
+}
+
+var ctx = document.getElementById("langDistChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        datasets: [{
+            label: "% linii kodu",
+            data: datasets,
+            backgroundColor: [
+                'rgba(255, 100, 100, 0.2)',
+                'rgba(100, 100, 255, 0.2)',
+                'rgba(255, 255, 100, 0.2)',
+                'rgba(100, 255, 255, 0.2)',
+                'rgba(100, 100, 255, 0.2)',
+                'rgba(255, 100, 100, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }],
+        labels: labels
+    },
+    options: {
+        responsive: false,
+    }
+});
+    </script>
+</div>
+</body>
+</html>

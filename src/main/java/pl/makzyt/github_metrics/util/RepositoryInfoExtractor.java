@@ -35,7 +35,15 @@ public class RepositoryInfoExtractor {
         }
     }
 
-    public HashMap<String, String> getLanguageDistribution() {
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getRepositoryName() {
+        return repositoryName;
+    }
+
+    public HashMap<String, Double> getLanguageDistribution() {
         final String languagesUrl = "https://api.github.com/repos/" + this.userName + "/" + this.repositoryName + "/languages";
 
         try {
@@ -58,13 +66,12 @@ public class RepositoryInfoExtractor {
             }
 
             // Create empty HashMap.
-            HashMap<String, String> languageDistributionMap = new HashMap<>();
+            HashMap<String, Double> languageDistributionMap = new HashMap<>();
 
             // Put the percentages of language distribution.
             for (String key : keySet) {
-                final double percentage = rootObject.get(key).getAsLong() * 100.0 / linesNumber;
-                final String percentageText = String.format("%.2f%%", percentage);
-                languageDistributionMap.put(key, percentageText);
+                final Double percentage = rootObject.get(key).getAsLong() * 100.0 / linesNumber;
+                languageDistributionMap.put(key, percentage);
             }
 
             return languageDistributionMap;

@@ -12,14 +12,13 @@
               type="text/css"
               th:href="@{/css/style.css}">
         <script th:src="@{/js/bootstrap.min.js}"></script>
+        <script th:src="@{/js/chart.min.js}"></script>
     </head>
     <body>
         <div th:replace="_fragments :: header"></div>
-        <div>
-            <div class="container">
-                <div layout:fragment="content"></div>
-            </div>
-            <div th:replace="_fragments :: footer"></div>
+        <div class="container">
+            <div layout:fragment="content"></div>
         </div>
+        <div th:replace="_fragments :: footer"></div>
     </body>
 </html>
