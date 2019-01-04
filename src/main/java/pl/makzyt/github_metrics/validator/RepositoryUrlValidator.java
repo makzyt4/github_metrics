@@ -1,6 +1,7 @@
 package pl.makzyt.github_metrics.validator;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -11,7 +12,7 @@ import java.net.URL;
 
 public class RepositoryUrlValidator
         implements ConstraintValidator<RepositoryUrlConstraint, String> {
-    private final Logger logger = Logger.getLogger(RepositoryUrlValidator.class);
+    private final Logger logger = LoggerFactory.getLogger(RepositoryUrlValidator.class);
 
     @Override
     public void initialize(RepositoryUrlConstraint repoUrl) {
@@ -27,7 +28,7 @@ public class RepositoryUrlValidator
             url = new URL(repositoryUrl);
         } catch (MalformedURLException e) {
             logger.warn("Malformed URL found, given URL is invalid.");
-            logger.error(e.getStackTrace());
+            logger.error(e.getStackTrace().toString());
 
             return false;
         }
@@ -43,7 +44,7 @@ public class RepositoryUrlValidator
             return code == 200 && isGithubUrl;
         } catch (IOException e) {
             logger.warn("IOException, given URL is invalid.");
-            logger.error(e.getStackTrace());
+            logger.error(e.getStackTrace().toString());
 
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package pl.makzyt.github_metrics.controller;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +14,7 @@ import javax.validation.Valid;
 
 @Controller
 public class IndexController {
-    private final Logger logger = Logger.getLogger(IndexController.class);
+    private final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexGet(Model model) {
