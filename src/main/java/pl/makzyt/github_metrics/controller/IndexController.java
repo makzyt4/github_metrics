@@ -1,5 +1,6 @@
 package pl.makzyt.github_metrics.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,8 @@ import javax.validation.Valid;
 
 @Controller
 public class IndexController {
+    private final Logger logger = Logger.getLogger(IndexController.class);
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexGet(Model model) {
         model.addAttribute("form", new RepositoryForm());
@@ -22,10 +25,13 @@ public class IndexController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String indexPost(@Valid @ModelAttribute("form") RepositoryForm form,
                             BindingResult result, Model model) {
+
         if (result.hasErrors()) {
+            logger.warn("Validation error, go to template [index].");
             return "index";
         }
 
+        logger.info("No errors found, go to template [results].");
         return "results";
     }
 }
