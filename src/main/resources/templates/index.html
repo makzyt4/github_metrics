@@ -10,9 +10,9 @@
             <form th:action="@{/}" th:object="${form}" method="post">
                 <div class="form-group">
                     <label for="repoAddressInput">Adres do repozytorium:</label>
-                    <input type="text" class="form-control" id="repoAddressInput" placeholder="Podaj adres URL do repozytorium na GitHub" th:field="*{repoUrl}">
+                    <input type="text" class="form-control" id="repoAddressInput" placeholder="Podaj adres URL do repozytorium na GitHub" th:field="*{repositoryUrl}">
+                    <small class="form-text text-danger" th:if="${#fields.hasErrors('repositoryUrl')}" th:errors="*{repositoryUrl}"></small>
                 </div>
-                <small class="form-text text-danger" th:if="${#fields.hasErrors('repoUrl')}" th:errors="*{repoUrl}"></small>
                 <button type="submit" class="btn btn-primary">Analizuj</button>
             </form>
         </div>
