@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,31 +42,14 @@ public class SonarProjectLoader {
     public SonarProjectLoader() {
         InputStream input = null;
 
-        // Open and load properties file
         try {
             input = new FileInputStream("src/main/resources/sonar.properties");
 
-            // Load properties
-            properties.load(input);
+            loadProperties(input);
+            loadBaseUrl();
+            loadHttpClient();
 
-            // Set base URL (eg. http://localhost:9000/)
-            baseUrl = String.format("http://%s:%s/",
-                    properties.getProperty("sonar.host"),
-                    properties.getProperty("sonar.port"));
-
-            // Set provider credentials
-            Credentials credentials = new UsernamePasswordCredentials(
-                    properties.getProperty("sonar.login"),
-                    properties.getProperty("sonar.password")
-            );
-            CredentialsProvider provider = new BasicCredentialsProvider();
-            provider.setCredentials(AuthScope.ANY, credentials);
-
-            // Build HTTP client
-            client = HttpClientBuilder
-                    .create()
-                    .setDefaultCredentialsProvider(provider)
-                    .build();
+            loginWithCredentials();
         } catch (IOException e) {
             logger.error(e.getMessage());
         } finally {
@@ -79,9 +63,35 @@ public class SonarProjectLoader {
         }
     }
 
-    public void loadProject(String projectKey) throws InvalidKeyException,
-            IOException {
-        // Login with given credentials
+    private void loadProperties(InputStream input) throws IOException {
+        properties.load(input);
+    }
+
+    private void loadHttpClient() {
+        // Set credentials
+        Credentials credentials = new UsernamePasswordCredentials(
+                properties.getProperty("sonar.login"),
+                properties.getProperty("sonar.password")
+        );
+        CredentialsProvider provider = new BasicCredentialsProvider();
+        provider.setCredentials(AuthScope.ANY, credentials);
+
+        // Build HTTP client
+        client = HttpClientBuilder
+                .create()
+                .setDefaultCredentialsProvider(provider)
+                .build();
+    }
+
+    private void loadBaseUrl() {
+        // Set base URL (eg. http://localhost:9000/)
+        baseUrl = String.format("http://%s:%s/",
+                properties.getProperty("sonar.host"),
+                properties.getProperty("sonar.port"));
+
+    }
+
+    private void loginWithCredentials() throws IOException {
         final String urlLogin = baseUrl +
                 String.format("api/authentication/login?login=%s&password=%s",
                         properties.getProperty("sonar.login"),
@@ -98,11 +108,23 @@ public class SonarProjectLoader {
         HttpResponse response = client.execute(httpPost);
         String jsonString = EntityUtils.toString(response.getEntity());
 
+        JsonParser parser = new JsonParser();
+        JsonElement rootObj = parser.parse(jsonString);
+
+        if (rootObj != null) {
+            throw new IOException("Wrong credentials");
+        }
+    }
+
+    public void loadProject(String projectKey) throws InvalidKeyException,
+            IOException {
+        // Login with given credentials
+
         final String urlProjects = baseUrl + "api/projects/search";
 
         // Get the projects
-        response = client.execute(new HttpGet(urlProjects));
-        jsonString = EntityUtils.toString(response.getEntity());
+        HttpResponse response = client.execute(new HttpGet(urlProjects));
+        String jsonString = EntityUtils.toString(response.getEntity());
 
         JsonParser parser = new JsonParser();
         JsonObject rootObj = parser.parse(jsonString).getAsJsonObject();
@@ -129,7 +151,6 @@ public class SonarProjectLoader {
 
         this.projectKey = projectKey;
     }
-
     public boolean loaded() {
         return this.projectKey != null;
     }
