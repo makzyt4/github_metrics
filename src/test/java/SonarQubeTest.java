@@ -4,10 +4,9 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.makzyt.github_metrics.Main;
-import pl.makzyt.github_metrics.util.SonarQube;
+import pl.makzyt.github_metrics.util.sonarqube.SonarQube;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {Main.class})
@@ -18,11 +17,11 @@ public class SonarQubeTest {
         sq.setHost("http://localhost:9000");
         sq.login("admin", "admin");
 
-        Assert.assertTrue(sq.authenticated());
+        Assert.assertTrue(sq.privileged());
 
         sq.logout();
 
-        Assert.assertFalse(sq.authenticated());
+        Assert.assertFalse(sq.privileged());
     }
 
     @Test
@@ -31,7 +30,7 @@ public class SonarQubeTest {
         sq.setHost("http://localhost:9000");
         sq.login("admin", "abc");
 
-        Assert.assertFalse(sq.authenticated());
+        Assert.assertFalse(sq.privileged());
     }
 
     @Test
@@ -41,7 +40,7 @@ public class SonarQubeTest {
         sq.setCredentials("admin", "admin");
         sq.login();
 
-        Assert.assertTrue(sq.authenticated());
+        Assert.assertTrue(sq.privileged());
     }
 
     @Test
@@ -51,6 +50,6 @@ public class SonarQubeTest {
         sq.setCredentials("admin", "abc");
         sq.login();
 
-        Assert.assertFalse(sq.authenticated());
+        Assert.assertFalse(sq.privileged());
     }
 }

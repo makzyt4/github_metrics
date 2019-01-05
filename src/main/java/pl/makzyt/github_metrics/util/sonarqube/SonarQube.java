@@ -1,5 +1,7 @@
-package pl.makzyt.github_metrics.util;
+package pl.makzyt.github_metrics.util.sonarqube;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.http.HttpResponse;
@@ -15,6 +17,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class SonarQube {
     private String host;
@@ -48,37 +51,76 @@ public class SonarQube {
                 .setDefaultCredentialsProvider(provider)
                 .build();
 
-        final String urlLogin = host +
+        String urlLogin = host +
                 String.format("/api/authentication/login?login=%s&password=%s",
                         username, password);
-
-        System.out.println(urlLogin);
 
         HttpPost httpPost = new HttpPost(urlLogin);
         client.execute(httpPost);
     }
 
     public void logout() throws IOException {
-        final String urlLogout = host + "/api/authentication/logout";
+        String urlLogout = host + "/api/authentication/logout";
 
         HttpPost httpPost = new HttpPost(urlLogout);
         client.execute(httpPost);
     }
 
-    public boolean authenticated() throws IOException {
-        final String urlValidate = host + "/api/projects/search";
-        HttpGet httpGet = new HttpGet(urlValidate);
+    public boolean privileged() throws IOException {
+        String urlToValidate = host + "/api/projects/search";
+        HttpGet httpGet = new HttpGet(urlToValidate);
         HttpResponse response = client.execute(httpGet);
 
         String jsonString = EntityUtils.toString(response.getEntity());
         JsonParser jsonParser = new JsonParser();
         JsonObject rootObj = jsonParser.parse(jsonString).getAsJsonObject();
 
-        return rootObj.get("errors") == null;
+        boolean privilegeError = rootObj.get("errors") != null;
+
+        return !privilegeError;
+    }
+
+    public HashMap<String, SQProject> getProjects() throws IOException {
+        String urlToValidate = host + "/api/projects/search";
+        HttpGet httpGet = new HttpGet(urlToValidate);
+        HttpResponse response = client.execute(httpGet);
+
+        String jsonString = EntityUtils.toString(response.getEntity());
+        JsonParser jsonParser = new JsonParser();
+        JsonObject rootObj = jsonParser.parse(jsonString).getAsJsonObject();
+
+        boolean privilegeError = rootObj.get("errors") != null;
+
+        if (privilegeError) {
+            return null;
+        }
+
+        HashMap<String, SQProject> projects = new HashMap<>();
+
+        JsonArray components = rootObj.get("components").getAsJsonArray();
+
+        for (JsonElement element : components) {
+            String key = element.getAsJsonObject().get("key").getAsString();
+            projects.put(key, new SQProject(this, key));
+        }
+
+        return projects;
     }
 
     public String getHost() {
         return host;
+    }
+
+    protected String getUsername() {
+        return username;
+    }
+
+    protected String getPassword() {
+        return password;
+    }
+
+    protected HttpClient getClient() {
+        return client;
     }
 
     public void setHost(String host) {
