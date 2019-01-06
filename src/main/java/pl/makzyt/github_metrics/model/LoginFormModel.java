@@ -3,7 +3,7 @@ package pl.makzyt.github_metrics.model;
 import org.hibernate.validator.constraints.URL;
 import pl.makzyt.github_metrics.validator.SonarCredentials;
 
-@SonarCredentials
+@SonarCredentials(message = "{validation.sonarInvalidData}")
 public class LoginFormModel {
     @URL(message = "{validation.invalidUrl}")
     private String host;

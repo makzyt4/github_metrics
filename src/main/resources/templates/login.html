@@ -11,7 +11,7 @@
             <br>
             <div class="form-group">
                 <label for="loginInput">Host:</label>
-                <input type="url" class="form-control" id="hostInput" placeholder="http://localhost:9000" th:field="*{host}">
+                <input type="url" class="form-control" id="hostInput" placeholder="Podaj adres hosta" th:field="*{host}">
                 <small class="form-text text-danger" th:if="${#fields.hasErrors('host')}" th:errors="*{host}"></small>
             </div>
             <div class="form-group">
@@ -24,6 +24,9 @@
                 <input type="password" class="form-control" id="passwordInput" placeholder="Podaj hasło" th:field="*{password}">
                 <small class="form-text text-danger" th:if="${#fields.hasErrors('login')}" th:errors="*{password}"></small>
             </div>
+            <hr>
+            <small class="form-text text-danger" th:if="${#fields.hasErrors('${form}')}" th:errors="${form}" ></small>
+            <br>
             <button type="submit" class="btn btn-primary">Zaloguj się</button>
         </form>
     </div>

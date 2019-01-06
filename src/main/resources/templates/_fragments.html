@@ -4,10 +4,12 @@
           xmlns="http://www.w3.org/1999/html">
     <body>
         <div th:fragment="header">
-            <div class="jumbotron text-center">
-                <h1>Analizator kodu</h1>
-                <p class="lead">Program służący do analizy projektów</p>
-            </div>
+            <a th:href="@{/}">
+                <div class="jumbotron text-center">
+                    <h1>Analizator kodu</h1>
+                    <p class="lead">Program służący do analizy projektów</p>
+                </div>
+            </a>
         </div>
         <div th:fragment="footer">
             <div class="jumbotron text-center footer">

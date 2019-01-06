@@ -10,6 +10,7 @@ import java.io.IOException;
 
 public class SonarCredentialsValidator
         implements ConstraintValidator<SonarCredentials, LoginFormModel> {
+
     @Autowired
     private SonarQube sonarQube;
 
@@ -24,6 +25,7 @@ public class SonarCredentialsValidator
         sonarQube.setCredentials(value.getLogin(), value.getPassword());
 
         try {
+            sonarQube.login();
             return sonarQube.privileged();
         } catch (IOException e) {
             return false;
