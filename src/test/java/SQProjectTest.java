@@ -49,5 +49,8 @@ public class SQProjectTest {
 
         Assert.assertEquals(2.8, analysis.getClassComplexity(), 0.1);
         Assert.assertEquals(3, analysis.getBugs());
+        Assert.assertEquals(0.0, analysis.getBusinessValue(), 0.1);
+        Assert.assertEquals(6, analysis.getClasses());
+        Assert.assertEquals("A", analysis.getSqaleRating());
     }
 }
