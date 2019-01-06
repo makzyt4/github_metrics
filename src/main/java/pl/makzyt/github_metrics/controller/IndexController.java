@@ -31,6 +31,7 @@ public class IndexController {
         model.addAttribute("form", new LoginFormModel());
 
         if (loggedIn) {
+            model.addAttribute("sq", sonarQube);
             return "project_list";
         }
 
@@ -40,12 +41,13 @@ public class IndexController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public String indexPostMapping(
             @Valid @ModelAttribute("form") LoginFormModel form,
-            BindingResult result) {
+            BindingResult result, Model model) {
 
         if (result.hasErrors()) {
             return "login";
         }
 
+        model.addAttribute("sq", sonarQube);
         return "project_list";
     }
 }

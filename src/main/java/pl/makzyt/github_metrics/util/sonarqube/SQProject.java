@@ -20,4 +20,8 @@ public class SQProject {
     public String getKey() {
         return key;
     }
+
+    public boolean isOk() {
+        return key.matches("[a-z_]+[0-9]*[a-z_]+");
+    }
 }

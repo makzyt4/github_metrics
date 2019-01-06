@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+    <head>
+        <title>Projekty</title>
+    </head>
+    <body>
+    <div layout:fragment="content">
+        <h2>Projekty</h2>
+        <br>
+        <table class="table">
+            <tr>
+                <th>Nazwa projektu</th>
+                <th>Status</th>
+                <th>Akcje</th>
+            </tr>
+            <tr th:each="project : ${sq.getProjects()}">
+                <td th:text="${project.key}"></td>
+                <td class="text-success font-weight-bold" th:if="${project.value.isOk()}">OK</td>
+                <td class="text-danger font-weight-bold" th:unless="${project.value.isOk()}">Nieprawidłowy klucz projektu</td>
+                <td th:if="${project.value.isOk()}">
+                    <a class="btn btn-success" th:href="@{/analysis/} + ${project.key}">Analizuj</a>
+                </td>
+                <td th:unless="${project.value.isOk()}">
+                    <button class="btn btn-success" disabled>Analizuj</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </body>
+</html>
