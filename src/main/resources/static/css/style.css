@@ -39,3 +39,34 @@ input::-webkit-inner-spin-button {
 a:hover {
     text-decoration: none;
 }
+
+.sqale-rating {
+    height: 40px;
+    width: 40px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 100%;
+    color: white;
+    padding-top: 8px;
+    text-align: center;
+}
+
+.sqale-rating-a {
+    background-color: green;
+}
+
+.sqale-rating-b {
+    background-color: #759b23;
+}
+
+.sqale-rating-c {
+    background-color: #e2d734;
+}
+
+.sqale-rating-d {
+    background-color: #e29934;
+}
+
+.sqale-rating-e {
+    background-color: red;
+}

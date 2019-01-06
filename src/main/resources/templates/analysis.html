@@ -7,6 +7,185 @@
     <body>
     <div layout:fragment="content">
         <h2 th:utext="'Analiza projektu <i>' + ${project.key} + '</i>'"></h2>
+        <table class="table">
+            <tr>
+                <th>Błędy</th>
+                <td th:text="${analysis.bugs}"></td>
+            </tr>
+            <tr>
+                <th>Klasy</th>
+                <td th:text="${analysis.classes}"></td>
+            </tr>
+            <tr>
+                <th>Złe praktyki</th>
+                <td th:text="${analysis.codeSmells}"></td>
+            </tr>
+            <tr>
+                <th>Linie komentarzy</th>
+                <td th:text="${analysis.commentLines}"></td>
+            </tr>
+            <tr>
+                <th>Linie kodu skomentowane</th>
+                <td th:text="${analysis.commentedOutCodeLines}"></td>
+            </tr>
+            <tr>
+                <th>Zagęszczenie komentarzy</th>
+                <td th:text="${analysis.commentLinesDensity} + '%'"></td>
+            </tr>
+            <tr>
+                <th>Złożoność</th>
+                <td th:text="${analysis.complexity}"></td>
+            </tr>
+            <tr>
+                <th>Złożoność kognitywna</th>
+                <td th:text="${analysis.cognitiveComplexity}"></td>
+            </tr>
+            <tr>
+                <th>Złożoność w klasach</th>
+                <td th:text="${analysis.complexityInClasses}"></td>
+            </tr>
+            <tr>
+                <th>Złożoność w funkcjach</th>
+                <td th:text="${analysis.complexityInFunctions}"></td>
+            </tr>
+            <tr>
+                <th>Złożoność klas</th>
+                <td th:text="${analysis.classComplexity}"></td>
+            </tr>
+            <tr>
+                <th>Złożoność funkcji</th>
+                <td th:text="${analysis.functionComplexity}"></td>
+            </tr>
+            <tr>
+                <th>Złożoność plików</th>
+                <td th:text="${analysis.fileComplexity}"></td>
+            </tr>
+            <tr>
+                <th>Problemy krytyczne</th>
+                <td th:text="${analysis.criticalViolations}"></td>
+            </tr>
+            <tr>
+                <th>Problemy poważne</th>
+                <td th:text="${analysis.majorViolations}"></td>
+            </tr>
+            <tr>
+                <th>Problemy pomniejsze</th>
+                <td th:text="${analysis.minorViolations}"></td>
+            </tr>
+            <tr>
+                <th>Foldery</th>
+                <td th:text="${analysis.directories}"></td>
+            </tr>
+            <tr>
+                <th>Pliki</th>
+                <td th:text="${analysis.files}"></td>
+            </tr>
+            <tr>
+                <th>Linie kodu</th>
+                <td th:text="${analysis.lines}"></td>
+            </tr>
+            <tr>
+                <th>Zduplikowane pliki</th>
+                <td th:text="${analysis.duplicatedFiles}"></td>
+            </tr>
+            <tr>
+                <th>Zduplikowane linie kodu</th>
+                <td th:text="${analysis.duplicatedLines}"></td>
+            </tr>
+            <tr>
+                <th>Koszt rozwoju</th>
+                <td th:text="${analysis.developmentCost}"></td>
+            </tr>
+            <tr>
+                <th>Wartość biznesowa</th>
+                <td th:text="${analysis.businessValue}"></td>
+            </tr>
+            <tr>
+                <th>Pokrycie testami</th>
+                <td th:text="${analysis.coverage} + '%'"></td>
+            </tr>
+            <tr>
+                <th>Ocena zarządzania kodem</th>
+
+                <td>
+                    <div class="sqale-rating sqale-rating-a" th:if="${analysis.sqaleRating} == 'A'">
+                        A
+                    </div>
+                    <div class="sqale-rating sqale-rating-b" th:if="${analysis.sqaleRating} == 'B'">
+                        B
+                    </div>
+                    <div class="sqale-rating sqale-rating-c" th:if="${analysis.sqaleRating} == 'C'">
+                        C
+                    </div>
+                    <div class="sqale-rating sqale-rating-d" th:if="${analysis.sqaleRating} == 'D'">
+                        D
+                    </div>
+                    <div class="sqale-rating sqale-rating-e" th:if="${analysis.sqaleRating} == 'E'">
+                        E
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <h3>Dystrybucja językowa (%)</h3>
+        <canvas id="langDistChart" width="400" height="400"></canvas>
+        <script th:inline="javascript">
+
+/*<![CDATA[*/
+var langMap = /*[[${analysis.languageDistribution}]]*/;
+/*]]>*/
+
+var datasets = [];
+var labels = [];
+for (var i in langMap) {
+    labels.push(i);
+    datasets.push(Math.round(langMap[i] * 100) / 100);
+}
+
+var ctx = document.getElementById("langDistChart").getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        datasets: [{
+            label: "% linii kodu",
+            data: datasets,
+            backgroundColor: [
+                'rgba(255, 100, 100, 1.0)',
+                'rgba(100, 100, 255, 1.0)',
+                'rgba(255, 255, 100, 1.0)',
+                'rgba(100, 255, 255, 1.0)',
+                'rgba(100, 100, 255, 1.0)',
+                'rgba(255, 100, 100, 1.0)',
+                'rgba(255, 100, 100, 1.0)',
+                'rgba(100, 100, 255, 1.0)',
+                'rgba(255, 255, 100, 1.0)',
+                'rgba(100, 255, 255, 1.0)',
+                'rgba(100, 100, 255, 1.0)',
+                'rgba(255, 100, 100, 1.0)'
+            ],
+            borderColor: [
+                'rgba(255, 100, 100, 1.0)',
+                'rgba(100, 100, 255, 1.0)',
+                'rgba(255, 255, 100, 1.0)',
+                'rgba(100, 255, 255, 1.0)',
+                'rgba(100, 100, 255, 1.0)',
+                'rgba(255, 100, 100, 1.0)',
+                'rgba(255, 100, 100, 1.0)',
+                'rgba(100, 100, 255, 1.0)',
+                'rgba(255, 255, 100, 1.0)',
+                'rgba(100, 255, 255, 1.0)',
+                'rgba(100, 100, 255, 1.0)',
+                'rgba(255, 100, 100, 1.0)'
+            ],
+            borderWidth: 1
+        }],
+        labels: labels
+    },
+    options: {
+        responsive: false,
+    }
+});
+    </script>
         <br>
     </div>
     </body>

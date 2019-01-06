@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import pl.makzyt.github_metrics.util.sonarqube.SQAnalysis;
 import pl.makzyt.github_metrics.util.sonarqube.SQProject;
 import pl.makzyt.github_metrics.util.sonarqube.SonarQube;
 
@@ -33,7 +34,10 @@ public class AnalysisController {
                 return "redirect:/";
             }
 
+            SQAnalysis analysis = project.getAnalysis();
+
             model.addAttribute("project", project);
+            model.addAttribute("analysis", analysis);
             return "analysis";
         } catch (IOException e) {
             return "redirect:/";
