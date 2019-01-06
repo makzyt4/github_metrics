@@ -15,20 +15,23 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.HashMap;
 
+@Component
 public class SonarQube {
     private String host;
     private String username;
     private String password;
     private HttpClient client;
 
-    public SonarQube() {
+    public SonarQube() throws IOException {
         host = "http://localhost:9000";
         username = "admin";
         password = "admin";
+        client = HttpClientBuilder.create().build();
     }
 
     public void login() throws IOException {

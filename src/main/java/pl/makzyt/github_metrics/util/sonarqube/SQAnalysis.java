@@ -106,8 +106,14 @@ public class SQAnalysis {
         languageObjs = rootObj.get("languages").getAsJsonArray();
 
         for (JsonElement element : measures) {
-            String key = element.getAsJsonObject().get("metric").getAsString();
-            JsonElement value = element.getAsJsonObject().get("value");
+            String key = element
+                    .getAsJsonObject()
+                    .get("metric")
+                    .getAsString();
+
+            JsonElement value = element
+                    .getAsJsonObject()
+                    .get("value");
 
             switch (key) {
                 case "bugs":
@@ -219,7 +225,10 @@ public class SQAnalysis {
 
     private String getLanguageName(String key) throws IOException {
         for (JsonElement element : languageObjs) {
-            String currentKey = element.getAsJsonObject().get("key").getAsString();
+            String currentKey = element
+                    .getAsJsonObject()
+                    .get("key")
+                    .getAsString();
 
             if (currentKey.equals(key)) {
                 return element.getAsJsonObject().get("name").getAsString();
@@ -337,5 +346,9 @@ public class SQAnalysis {
 
     public int getFiles() {
         return files;
+    }
+
+    public int getLines() {
+        return lines;
     }
 }

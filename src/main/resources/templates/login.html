@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+    <head>
+        <title>Strona główna</title>
+    </head>
+    <body>
+    <div layout:fragment="content">
+        <form th:action="@{/}" th:object="${form}" method="post">
+            <h2>Zaloguj się do Sonar API</h2>
+            <br>
+            <div class="form-group">
+                <label for="loginInput">Host:</label>
+                <input type="url" class="form-control" id="hostInput" placeholder="http://localhost:9000" th:field="*{host}">
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('host')}" th:errors="*{host}"></small>
+            </div>
+            <div class="form-group">
+                <label for="loginInput">Login:</label>
+                <input type="text" class="form-control" id="loginInput" placeholder="Podaj login" th:field="*{login}">
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></small>
+            </div>
+            <div class="form-group">
+                <label for="loginInput">Hasło:</label>
+                <input type="password" class="form-control" id="passwordInput" placeholder="Podaj hasło" th:field="*{password}">
+                <small class="form-text text-danger" th:if="${#fields.hasErrors('login')}" th:errors="*{password}"></small>
+            </div>
+            <button type="submit" class="btn btn-primary">Zaloguj się</button>
+        </form>
+    </div>
+    </body>
+</html>
